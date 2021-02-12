@@ -52,19 +52,11 @@ countCurryChars = (char) => {
   }
 }
 
-// or same again but function used in curry...
+// same three functions again but used in curry...
 
-const countChar = (string, char) => 
-	string.split('')
-	.filter((splitChar) => splitChar.toLowerCase() == char.toLowerCase()).length
-
-const countCurryCharsWordFirst = (string) => {
-  return (char) => countChar(string, char)
-}
-
-countCurryChars = (char) => {
-  return (string) => countChar(string, char)
-}
+const countChar = (string, char) => string.split('').filter((splitChar) => splitChar.toLowerCase() == char.toLowerCase()).length
+const countCurryCharsWordFirst = (string) => (char) => countChar(string, char)
+const countCurryChars = (char) => (string) => countChar(string, char)
 
 console.log(countCharOne('BBC', 'B'));
 // → 2
