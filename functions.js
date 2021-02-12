@@ -20,13 +20,15 @@ console.log(isEven(-1));
 
 // BEAN COUNTING -----------------------------------------
 
-const countChar = (string, char) => {
+const countCharOne = (string, char) => {
   let counter = 0
   for (let i = 0; i < string.length; i++) {
    	if (string[i] === char) counter++
   }
   return counter
 }
+// or.....
+const countCharTwo = (string, char) => string.split('').filter((splitChar) => splitChar == char).length
 
 const countCurryCharsWordFirst = (string) => {
   return (char) => {
@@ -50,7 +52,9 @@ countCurryChars = (char) => {
   }
 }
 
-console.log(countChar('BBC', 'B'));
+console.log(countCharOne('BBC', 'B'));
+// → 2
+console.log(countCharOne('BBC', 'B'));
 // → 2
 console.log(countCurryCharsWordFirst("kakkerlak")('k'));
 // → 4
