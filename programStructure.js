@@ -6,9 +6,9 @@ for (let i = 1; i <= 7; i++) {
   console.log(hashes)
 }
 
-// FIZZBUZZ ----------------------------------------- (i don't like this it's too long!)
+// FIZZBUZZ ----------------------------------------- 
 
-for (let i = 1; i <= 100; i++){
+for (let i = 1; i <= 100; i++){ // -------------- (i don't like this it's too long!)
   if (i % 5 === 0 && i % 3 === 0){
   	console.log(i, 'FizzBuzz')
   } else if (i % 3 === 0) {
@@ -18,6 +18,32 @@ for (let i = 1; i <= 100; i++){
   } else {
   console.log(i)
   }
+}
+
+for (let i = 1; i <= 100; i++){ // -------------- This one is even longer, but different i guess
+  switch(true) {
+    case (i % 5 === 0 && i % 3 === 0):
+      console.log(i, 'FizzBuzz')
+      break
+    case (i % 3 === 0):
+      console.log(i, 'Fizz')
+      break
+    case (i % 5 === 0):
+      console.log(i, 'Buzz')
+      break
+    default:
+      console.log(i)
+  }
+}
+
+for (let i = 1; i <= 100; i++){  // ------------- Shorter, but.... nested ternaries :\ 
+  i % 5 === 0 && i % 3 === 0
+      ? console.log(i, 'FizzBuzz')
+      : (i % 3 === 0) 
+      ? console.log(i, 'Fizz')
+      : (i % 5 === 0)
+      ? console.log(i, 'Buzz')
+      : console.log(i)
 }
 
 // CHESSBOARD ----------------------------------------
