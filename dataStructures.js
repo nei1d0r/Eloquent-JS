@@ -80,3 +80,25 @@ console.log('==>', nth(arrayToList([10, 20, 30]), 1));
 // → 20
 
 // DEEP COMPARISSON ----------------------------------------------
+
+const deepEqual = (objectA, objectB, iteration) => {
+  // fail fast checks
+  if ('NULL', objectA === null || objectB === null) return 'null error'
+  if (objectA === objectB) return true
+  if (JSON.stringify(objectA) !== JSON.stringify(objectB)) return false
+  
+  // iterate over keys and check for match
+  return Object.keys(objectA).map((key) => {
+    return typeof objectA[key] !== 'object' 
+      ? objectA[key] === objectB[key]
+      : deepEqual(objectA[key], objectB[key]) // recursively check nested object
+  }).every((item) => item === true)           // checks that all items return true
+}
+
+let obj = {here: {is: "an"}, object: 2, bob: 5};
+console.log(deepEqual(obj, obj));
+// → true
+console.log(deepEqual(obj, {here: 1, object: 2}));
+// → false
+console.log(deepEqual(obj, {here: {is: "an"}, object: 2, bob: 5}));
+// → true
