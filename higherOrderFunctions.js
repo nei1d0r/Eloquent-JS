@@ -52,3 +52,47 @@ console.log(everyTwo([2, 4, 16], n => n < 10));
 console.log(every([], n => n < 10));
 console.log(everyTwo([], n => n < 10));
 // → true
+
+// DOMINANT WRITING DIRECTION ----------------------------------------------
+// Write a function that computes the dominant writing direction in a string
+// of text. Each script object has a direction property that can 
+// be "ltr" (left to right), "rtl" (right to left), or "ttb" (top to bottom).
+
+function dominantDirection(text) {
+  // Your code here.
+  const directions = {}
+  
+  // get each charCode for text
+  const charCodeArray = text.split('')
+    .filter((char) => char !== ' ')
+    .map((char) => charCode = char.charCodeAt(0))
+  
+  // iterate over each character, and each script to see if charCode is within
+  // a particular script range, if it is then we add it to directions, and
+  // tally accordingly
+  charCodeArray.map((char) => {
+    SCRIPTS.forEach(({ranges, direction, name}) => {
+      ranges.forEach(([lower, higher]) => {
+        if (lower <= char && char < higher) {
+          directions.hasOwnProperty(direction) 
+            ? directions[direction]++
+            : directions[direction] = 1
+        }
+      })
+    })
+  })
+  
+  // loop over each key in the directions array to set the dominant value to
+  // the highest tally
+  let dominant
+  Object.keys(directions).forEach((key) => {
+    if (dominant === undefined) dominant = key
+    if (directions[dominant] < directions[key]) dominant = key
+  })
+  
+  return dominant
+}
+console.log(dominantDirection("Hello!"));
+// → ltr
+console.log(dominantDirection("Hey, مساء الخير"));
+// → rtl
