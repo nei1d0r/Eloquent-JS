@@ -58,21 +58,21 @@ console.log(everyTwo([], n => n < 10));
 // of text. Each script object has a direction property that can 
 // be "ltr" (left to right), "rtl" (right to left), or "ttb" (top to bottom).
 
-function dominantDirection(text) {
-  // Your code here.
+const dominantDirection = (text) => {
   const directions = {}
   
-  // get each charCode for text
+  // returns an array of charCodes for text
   const charCodeArray = text.split('')
     .filter((char) => char !== ' ')
     .map((char) => charCode = char.charCodeAt(0))
   
-  // iterate over each character, and each script to see if charCode is within
-  // a particular script range, if it is then we add it to directions, and
-  // tally accordingly
-  charCodeArray.map((char) => {
-    SCRIPTS.forEach(({ranges, direction, name}) => {
-      ranges.forEach(([lower, higher]) => {
+  // iterate over each script, then iterarte through the scripts charachter
+  // range array. We then iterate throught the charCodeArray to see if the
+  // char is part of the script range, if so we record the script direction
+  // and tally accordingly
+  SCRIPTS.forEach(({ranges, direction, name}) => {
+    ranges.forEach(([lower, higher]) => {
+      charCodeArray.map((char) => {
         if (lower <= char && char < higher) {
           directions.hasOwnProperty(direction) 
             ? directions[direction]++
@@ -92,6 +92,7 @@ function dominantDirection(text) {
   
   return dominant
 }
+
 console.log(dominantDirection("Hello!"));
 // → ltr
 console.log(dominantDirection("Hey, مساء الخير"));
