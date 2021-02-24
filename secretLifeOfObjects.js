@@ -132,3 +132,17 @@ for (let value of Group.from(["a", "b", "c", "d"])) {
 // → a
 // → b
 // → c
+
+// BORROWING A CALL -----------------------------------------------------
+
+map = {one: true, two: true, hasOwnProperty: true};
+
+// Fix this call --> console.log(map.hasOwnProperty("one"));
+
+// using Object.prototype.[method].call([lexical this], ...args ) allows us to invoke
+// the prototypical function rather than the method override from the map object.
+// (from above) "Takes the this value as its first argument and treats further arguments 
+// as normal parameters".
+
+console.log(Object.prototype.hasOwnProperty.call(map, "one"));
+// → true
