@@ -1,6 +1,6 @@
 // FLATTENING ARRAYS -----------------------------------------
 
-let arrays = [[1, 2, 3], [4, 5], [6], ['blue', 8], [3, 5, 66, 7, 'j']];
+let arrays = [[1, 2, 3], [4, 5], [6]];
 // Your code here.
 const flatten = (arrays) => arrays.reduce((total, amount) => total.concat(amount))
 
