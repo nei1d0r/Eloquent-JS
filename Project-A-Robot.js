@@ -59,8 +59,8 @@ function yourRobot({place, parcels}, route) {
     // we map the route for EACH parcel and add to appropriate array
     parcels.forEach((parcel) => {
       parcel.place != place
-        ? pickUpRoutes.push(findRoute(roadGraph, place, parcel.place))
-		    : deliveryRoutes.push(findRoute(roadGraph, place, parcel.address))
+	? pickUpRoutes.push(findRoute(roadGraph, place, parcel.place))
+	: deliveryRoutes.push(findRoute(roadGraph, place, parcel.address))
     })
 
     // we sort each array and use the 0th index (shortest route) to determine our direction
@@ -71,3 +71,39 @@ function yourRobot({place, parcels}, route) {
   }
   return { direction: route[0], memory: route.slice(1) }
 }
+
+// PERSISTENT GROUP -----------------------------------------------------------------
+
+class PGroup {
+  constructor(arr){
+    this.group = arr
+  }
+  
+  add(item){
+    return new PGroup(this.group.concat(item))
+  }
+  
+  delete(item){
+    const filtered = this.group.filter((keep) => keep != item)
+  	if (this.group.indexOf(item) > -1){
+      return new PGroup(filtered);
+    }
+  }
+  
+  has(item){
+  	return this.group.includes(item) ? true : false
+  }
+}
+
+PGroup.empty = new PGroup([])
+
+let a = PGroup.empty.add("a");
+let ab = a.add("b");
+let b = ab.delete("a");
+
+console.log(b.has("b"));
+// → true
+console.log(a.has("b"));
+// → false
+console.log(b.has("a"));
+// → false
