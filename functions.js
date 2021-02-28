@@ -60,9 +60,7 @@ const countCurryChars = (char) => (string) => countChar(string, char)
 
 console.log(countCharOne('BBC', 'B'));
 // → 2
-console.log(countCharOne('BBC', 'B'));
-// → 2
 console.log(countCurryCharsWordFirst("kakkerlak")('k'));
 // → 4
 console.log(countCurryChars('M')('Mississippi'));
-// → 4
+// → 1
