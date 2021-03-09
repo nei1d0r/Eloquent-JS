@@ -16,12 +16,13 @@ const roads = [
 const buildGraph = (roadsArray) => {
   const graph = {}
   roadsArray.forEach((journey) => {
-	const [from, to] = journey.split("-")
-    if (Object.keys(graph).includes(from)) graph[from].push(to)
-    else {
-      graph[to] = [from]
-      graph[from] = [to] // cos if you can get there y'can go there right!!?
-    }
+    const [from, to] = journey.split("-")
+    Object.keys(graph).includes(from)
+      ? graph[from].push(to)
+      : graph[from] = [to]
+    Object.keys(graph).includes(to)
+      ? graph[to].push(from)
+      : graph[to] = [from]
   })
   return graph
 }
