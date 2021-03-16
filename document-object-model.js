@@ -51,3 +51,40 @@
   const div = document.getElementById('mountains')
   div.appendChild(table)
 </script>
+
+// ELEMENTS BY TAG NAME ------------------------------------------------------
+
+<h1>Heading with a <span>span</span> element.</h1>
+<p>A paragraph with <span>one</span>, <span>two</span>
+  spans.</p>
+
+<script>
+const byTagName = (node, tagName) => {
+  tagName = tagName.toUpperCase();
+  var hasTagName = [];
+
+  checkChildNode(node.firstChild); // check node's first child
+  return hasTagName; 
+    
+  function checkChildNode(node) { 
+    while (node) { // while node exists
+      if (node.nodeType == 1 && node.tagName) { // if node is an element
+        if (node.tagName === tagName) { // if node's tag name matches given tagName
+          hasTagName.push(node); // add node to hasTagName array
+        }
+        checkChildNode(node.firstChild); // check node's first child recursively
+      }
+      node = node.nextSibling; // reassign node to its next sibling
+    }
+  } 
+}
+  
+
+  console.log(byTagName(document.body, "h1").length);
+  // → 1
+  console.log(byTagName(document.body, "span").length);
+  // → 3
+  let para = document.querySelector("p");
+  console.log(byTagName(para, "span").length);
+  // → 2
+</script>
