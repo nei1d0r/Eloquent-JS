@@ -21,3 +21,23 @@
     
   window.addEventListener("keydown", (e) => changeSize(e))
 </script>
+
+// MOUSE TRAIL --------------------------------------------------------
+
+  let dots = []
+  
+  // create 12 dots
+  for (var i = 0; i < 12; i++) {
+    var node = document.createElement("div")
+    node.className = "trail"
+    document.body.appendChild(node)
+    dots.push(node)
+  }
+  currentDot = 0
+  window.addEventListener("mousemove", function(event) {
+    var dot = dots[currentDot];
+    dot.style.left = (event.pageX - 3) + "px"
+    dot.style.top = (event.pageY - 3) + "px"
+    // iterate over dot array
+    currentDot = (currentDot + 1) % dots.length // resets to 0 when limit reached
+  })
