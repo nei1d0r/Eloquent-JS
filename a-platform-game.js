@@ -63,3 +63,83 @@ async function runGame(plans, Display) {
   }
   console.log("You've won!");
 }
+
+// PAUSING THE GAME --------------------------------------------------
+
+function trackKeys(keys) {
+    let down = Object.create(null)
+    function track(event) {
+        if (keys.includes(event.key)) {
+            down[event.key] = event.type == 'keydown'
+            event.preventDefault()
+        }
+    }
+    window.addEventListener('keydown', track)
+    window.addEventListener('keyup', track)
+    down.unregister = () => { // unregister, to remove handlers
+        window.removeEventListener('keydown', track)
+        window.removeEventListener('keyup', track)
+    }
+    return down
+}
+
+var arrowKeys = trackKeys(['ArrowLeft', 'ArrowRight', 'ArrowUp'])
+
+function runAnimation(frameFunc) {
+    let lastTime = null
+    function frame(time) {
+        if (lastTime != null) {
+            let timeStep = Math.min(time - lastTime, 100) / 1000
+            if (frameFunc(timeStep) === false) return
+        }
+        lastTime = time
+        requestAnimationFrame(frame)
+    }
+    requestAnimationFrame(frame)
+}
+
+function runLevel(level, Display, playerLives) {
+    let display = new Display(document.body, level, playerLives)
+    let state = State.start(level)
+    let ending = 1
+
+    return new Promise((resolve) => {
+        let paused = false
+        const isGamePaused = () => paused
+        const pauseOrPlay = (e) => {
+            if (e.key == 'Escape') {
+                paused = !paused
+            }
+        }
+        const waitForResume = () => {
+            if (isGamePaused()) {
+                setTimeout(waitForResume, 100)
+            } else {
+                runAnimation(animate)
+            }
+        }
+        const animate = (time) => {
+            state = state.update(time, arrowKeys)
+            display.syncState(state)
+            if (isGamePaused()) {
+                waitForResume()
+                return false
+            } else if (state.status == 'playing') {
+                return true
+            } else if (ending > 0) {
+                ending -= time
+                return true
+            } else {
+                display.clear()
+                resolve(state.status)
+                document.removeEventListener('keydown', pauseOrPlay)
+                arrowKeys.unregister()
+                return false
+            }
+        }
+
+        document.addEventListener('keydown', pauseOrPlay)
+        let arrowKeys = trackKeys(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'Escape'])
+        runAnimation(animate)
+    })
+}
