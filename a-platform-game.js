@@ -143,3 +143,51 @@ function runLevel(level, Display, playerLives) {
         runAnimation(animate)
     })
 }
+
+// A MONSTER ------------------------------------------------------------------
+
+var Monster = class Monster {
+    constructor(pos, speed, reset) {
+        this.pos = pos
+        this.speed = speed
+        this.reset = reset
+    }
+
+    get type() {
+        return 'monster'
+    }
+
+    static create(pos, ch) {
+        if (ch == 'M') {
+            return new Monster(
+                pos.plus(new Vec(0, -1)), // adjust pos to accommodate height
+                new Vec(0, 0) // movement vector (0,0 no movement)
+            )
+        }
+    }
+}
+
+Monster.prototype.size = new Vec(1.2, 2)
+
+// collide prototype function
+Monster.prototype.collide = function (state) {
+    let player = state.player
+    let monster = this
+    if (monster.pos.y - player.pos.y > 1) { // land on top, it disappears (used coin style here)
+      let filtered = state.actors.filter(a => a != this)
+      return new State(state.level, filtered, state.status)
+    } else {
+      return new State(state.level, state.actors, 'lost') // any other point causes DEATH
+    }
+}
+
+Monster.prototype.update = function (time, state) {
+    let newPos = this.pos.plus(this.speed.times(time))
+    if (!state.level.touches(newPos, this.size, 'wall')) {
+        return new Monster(newPos, this.speed, this.reset)
+    } else if (this.reset) {
+        return new Monster(this.reset, this.speed, this.reset)
+    } else {
+        return new Monster(this.pos, this.speed.times(-1))
+    }
+}
