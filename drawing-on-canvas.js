@@ -34,8 +34,21 @@
   
   drawDiamond(100)
 
+// 3 - ZigZag
 
-
+  const zigZag = (length, zigHeight, zagTimes) => {
+    let isZig = true // we'll use this to set zig or zag
+    cx.beginPath()
+    cx.moveTo(0, 0)
+    
+    for (let i = 1; i < zagTimes + 1; i++) {
+      cx.lineTo(isZig ? length : 0, zigHeight * i)
+      cx.stroke()
+      isZig = !isZig
+    }
+  }
+  
+  zigZag(100, 10, 20)
 
 
 
