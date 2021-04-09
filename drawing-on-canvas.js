@@ -62,5 +62,15 @@
   
   spiral(50)
 
+  const spiral = (spirals, radius) => { // This one works
+    cx.beginPath()
+    for (let i = 0; i < spirals; i++) {
+      cx.arc(100, 100, i * radius, i * Math.PI/10 , i * Math.PI/10); // took some fiddling with latter params though!
+      cx.stroke()
+    }
+  }
+  
+  spiral(100, 0.6)
+
 
 </script>
