@@ -50,6 +50,17 @@
   
   zigZag(100, 10, 20)
 
+// 4 - Spiral
+
+  const spiral = (spirals) => { // This didn't work as expected, but looks cool!
+    cx.beginPath()
+    for (let i = 0; i < spirals; i++) {
+      cx.arc(100, 100, i * 2, i * 2, i * 2);
+      cx.stroke()
+    }
+  }
+  
+  spiral(50)
 
 
 </script>
