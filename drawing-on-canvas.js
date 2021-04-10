@@ -72,5 +72,25 @@
   
   spiral(100, 0.6)
 
+// 5 - STAR (couldn't quite get this one so got help!!)
+
+  const star = (x, y, width, points) => {
+    let halfWidth = width / 2;
+    let xCentre = x + halfWidth;
+    let yCentre = y + halfWidth;
+    let inc = 2 * Math.PI / points; 
+    let angle = 0;
+    cx.beginPath();
+    cx.moveTo(x + width, y + width / 2);
+    for (let i = 0; i < points; i++) {
+      angle += inc;
+      cx.quadraticCurveTo(xCentre, yCentre, xCentre + Math.cos(angle) * halfWidth, yCentre + Math.sin(angle) * halfWidth);
+    }
+    cx.fillStyle = 'orange';
+    cx.fill();
+  }
+  
+  star(50, 50, 100, 6)
+
 
 </script>
