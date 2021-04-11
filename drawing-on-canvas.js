@@ -92,5 +92,42 @@
   
   star(50, 50, 100, 6)
 
+</script>
 
+// PIE CHART ------------------------------------------------------------------
+
+<canvas width="600" height="300"></canvas>
+<script>
+  let cx = document.querySelector("canvas").getContext("2d");
+  let total = results
+    .reduce((sum, {count}) => sum + count, 0);
+  let currentAngle = -0.5 * Math.PI;
+  let centerX = 300, centerY = 150; radius = 100;
+
+  // Add code to draw the slice labels in this loop.
+  for (let result of results) {
+    let sliceAngle = (result.count / total) * 2 * Math.PI;
+    cx.beginPath();
+    cx.arc(centerX, centerY, 100,
+           currentAngle, currentAngle + sliceAngle);
+    const prevAngle = currentAngle // save this value for later
+    currentAngle += sliceAngle;
+
+    cx.lineTo(centerX, centerY);
+    cx.fillStyle = result.color;
+    cx.fill();
+    
+    // find half way between last angle and new angle
+    const angleDiff = (prevAngle + currentAngle) / 2
+    
+    cx.fillStyle = result.color;
+	  cx.textBaseline = 'middle';
+    Math.cos(angleDiff) > 0 ? cx.textAlign = 'start' : cx.textAlign = 'end'
+
+    cx.fillText(
+      result.name, 
+      centerX + Math.cos(angleDiff) * radius * 1.1, 
+      centerY + Math.sin(angleDiff) * radius * 1.1
+    );
+  }
 </script>
