@@ -37,3 +37,41 @@ getTheData('application/rainbows+unicorns')
     }
   })
 </script>
+
+// CONWAYS GAME OF LIFE ----------------------------------------- (save game) (draws grid, need to add logic)
+
+<div id="grid"></div>
+<button id="next">Next generation</button>
+
+<script>
+  // Your code here.
+  const btn = document.getElementById('next')
+  const grid = document.getElementById('grid')
+  const trueFalseRandom = () => Math.random() < 0.5
+
+  const createGrid = (perimeter) => {
+  	for (let i = 0; i < perimeter; i++){
+      var row = document.createElement("div")
+      row.setAttribute("id", `${i}`);
+
+      for (let j = 0; j < perimeter; j++){
+        let check = document.createElement("INPUT");
+		check.setAttribute("type", "checkbox")
+        trueFalseRandom()
+          ? check.setAttribute("checked", 'false')
+          : null
+        
+        check.setAttribute("id", `${i}${j}`);
+        row.appendChild(check)
+      }
+      grid.appendChild(row)
+    }
+  }
+  
+  const nextGeneration = (e) => {
+    e.preventDefault()
+  	console.log('NEXT')
+  }
+  
+  createGrid(5)
+  btn.addEventListener('click', nextGeneration)
