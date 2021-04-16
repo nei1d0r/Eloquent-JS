@@ -38,7 +38,7 @@ getTheData('application/rainbows+unicorns')
   })
 </script>
 
-// CONWAYS GAME OF LIFE ----------------------------------------- (save game) (draws grid, need to add logic)
+// CONWAYS GAME OF LIFE ----------------------------------------- (save game) (draws grid added state array, need to add logic)
 
 <div id="grid"></div>
 <button id="next">Next generation</button>
@@ -48,30 +48,58 @@ getTheData('application/rainbows+unicorns')
   const btn = document.getElementById('next')
   const grid = document.getElementById('grid')
   const trueFalseRandom = () => Math.random() < 0.5
-
-  const createGrid = (perimeter) => {
+  
+  const createGrid = (perimeter, state) => {
   	for (let i = 0; i < perimeter; i++){
-      var row = document.createElement("div")
-      row.setAttribute("id", `${i}`);
-
+      var row = document.createElement("div") // creates our row
+      row.setAttribute("id", `${i}`)
+		
+      let rowArr = [] 
       for (let j = 0; j < perimeter; j++){
-        let check = document.createElement("INPUT");
+        
+        // create checkboxes
+        let check = document.createElement("INPUT")
 		check.setAttribute("type", "checkbox")
+        
+        // random true/false to populate checkboxes
         trueFalseRandom()
           ? check.setAttribute("checked", 'false')
           : null
+        check.setAttribute("id", `${i}${j}`)
         
-        check.setAttribute("id", `${i}${j}`);
+        //get the checked status of the creted checkbox and add to array
+        rowArr.push(check.checked)
+        
+        // append the checkbox to the row
         row.appendChild(check)
       }
+      
+      // add the row boolean array to the main state array
+      state.push(rowArr)
+      
+      //append the row to the grid div
       grid.appendChild(row)
     }
+    return state
   }
   
+
+	
   const nextGeneration = (e) => {
     e.preventDefault()
+    // iterate over state array
+    initialState.forEach((rows, i) => {
+    	rows.forEach((row, j) => {
+        	console.log(row, i, j)
+          // ADD THE LOGIC CHECKS IN HERE FOR GAME
+        })
+    })
+    
+    // iterate over nests within state
   	console.log('NEXT')
   }
   
-  createGrid(5)
+  // creates grid and returns the grid as a nested array of booleans
+  const initialState = createGrid(40, [])
   btn.addEventListener('click', nextGeneration)
+</script>
