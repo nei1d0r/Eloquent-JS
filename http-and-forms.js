@@ -38,7 +38,7 @@ getTheData('application/rainbows+unicorns')
   })
 </script>
 
-// CONWAYS GAME OF LIFE ----------------------------------------- (save game) (draws grid added state array, need to add logic)
+// CONWAYS GAME OF LIFE ----------------------------------------- (works, but needs refactoring!!!)
 
 <div id="grid"></div>
 <button id="next">Next generation</button>
@@ -48,27 +48,34 @@ getTheData('application/rainbows+unicorns')
   const btn = document.getElementById('next')
   const grid = document.getElementById('grid')
   const trueFalseRandom = () => Math.random() < 0.5
+  const PERIMETER = 5
   
-  const createGrid = (perimeter, state) => {
-  	for (let i = 0; i < perimeter; i++){
+  const createGrid = (PERIMETER, state) => {
+  	for (let i = 0; i < PERIMETER; i++){
+      let rowArr = [] 
+      for (let j = 0; j < PERIMETER; j++){
+        rowArr.push(trueFalseRandom())
+      }
+      state.push(rowArr)
+    }
+    return state
+  }
+  
+  const drawGrid = (state) => {
+    grid.innerHTML = '';
+  	for (let i = 0; i < PERIMETER; i++){
       var row = document.createElement("div") // creates our row
       row.setAttribute("id", `${i}`)
 		
       let rowArr = [] 
-      for (let j = 0; j < perimeter; j++){
+      for (let j = 0; j < PERIMETER; j++){
         
         // create checkboxes
         let check = document.createElement("INPUT")
 		check.setAttribute("type", "checkbox")
-        
-        // random true/false to populate checkboxes
-        trueFalseRandom()
-          ? check.setAttribute("checked", 'false')
-          : null
+                
+        if (state[i][j]) check.setAttribute("checked", 'true')
         check.setAttribute("id", `${i}${j}`)
-        
-        //get the checked status of the creted checkbox and add to array
-        rowArr.push(check.checked)
         
         // append the checkbox to the row
         row.appendChild(check)
@@ -82,24 +89,52 @@ getTheData('application/rainbows+unicorns')
     }
     return state
   }
-  
-
+    
+  const findSurroundingSquares = (state, row, column) => {
+    let nearbyTrue = 0
+    let nearbyFalse = 0
+    
+    if (column < PERIMETER) state[row][column+1] ? nearbyTrue++ : nearbyFalse++
+    if (column > 0) state[row][column-1] ? nearbyTrue++ : nearbyFalse++
+    
+    if (row > 0 ) {
+      if (column < PERIMETER) state[row-1][column+1] ? nearbyTrue++ : nearbyFalse++
+      if (column > 0) state[row-1][column-1] ? nearbyTrue++ : nearbyFalse++
+      state[row-1][column] ? nearbyTrue++ : nearbyFalse++
+    }
+    
+    if (row+1 < PERIMETER) {
+      if (column < PERIMETER) state[row+1][column+1] ? nearbyTrue++ : nearbyFalse++
+      if (column > 0) state[row+1][column-1] ? nearbyTrue++ : nearbyFalse++
+      state[row+1][column] ? nearbyTrue++ : nearbyFalse++
+    }
+    
+    return [nearbyTrue, nearbyFalse]
+  }
 	
   const nextGeneration = (e) => {
     e.preventDefault()
     // iterate over state array
-    initialState.forEach((rows, i) => {
+    state.forEach((rows, i) => {
     	rows.forEach((row, j) => {
-        	console.log(row, i, j)
-          // ADD THE LOGIC CHECKS IN HERE FOR GAME
+          const [alive, dead] = findSurroundingSquares(state, i, j)
+          console.log(alive, dead)
+          
+          if (state[i][j] = true) {
+          	// Any live cell with fewer than two or more than three live neighbors dies.
+            if (alive < 2 || alive > 3) state[i][j] = false
+            
+            // Any live cell with two or three live neighbors lives on to the next generation.
+            else if (alive === 2 || alive === 3) state[i][j] = true
+          }
+          // Any dead cell with exactly three live neighbors becomes a live cell.
+          else if (state[i][j] = false && alive === 3) state[i][j] = true
         })
     })
-    
-    // iterate over nests within state
-  	console.log('NEXT')
+    drawGrid(state)
   }
-  
-  // creates grid and returns the grid as a nested array of booleans
-  const initialState = createGrid(40, [])
+    
+  const state = createGrid(PERIMETER, [])
+  drawGrid(state) // initial draw
   btn.addEventListener('click', nextGeneration)
 </script>
