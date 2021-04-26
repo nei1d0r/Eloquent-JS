@@ -35,14 +35,16 @@ const fs = require('fs')
 const baseFolder = './'
 const folderName = process.argv[2]
 
-const createDirectory = () => {
+const createDirectory = () => { // <= this becomes a boolean check
     const folderInDirectory = fs
-        .readdirSync(baseFolder, (files) => files)
-        .filter((file) => fs.statSync(file).isDirectory())
-        .some((folder) => folder === folderName)
-        
+        .readdirSync(baseFolder, (files) => files) // return files in current directory
+        .filter((file) => fs.statSync(file).isDirectory()) // filter to keep folders
+        .some((folder) => folder === folderName) // check if new folder name matches any existing folders
+
+    // if the name exists then tell user
     if (folderInDirectory) return console.log('folder name already exists')
 
+    // if the name is unique create the folder
     fs.mkdir(folderName, (err) => {
         if (err) console.log(err)
         else console.log(`New directory: ${folderName} - successfully created.`)
@@ -50,3 +52,4 @@ const createDirectory = () => {
 }
 
 createDirectory()
+
