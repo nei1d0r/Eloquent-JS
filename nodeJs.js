@@ -28,3 +28,25 @@ const readFile = (file, folder) => {
 const findFiles = (folder) => fs.readdirSync(folder).forEach((file) => readFile(file, folder))
 
 findFiles(baseFolder)
+
+// DIRECTORY CREATION ---------------------------------------------------------------
+
+const fs = require('fs')
+const baseFolder = './'
+const folderName = process.argv[2]
+
+const createDirectory = () => {
+    const folderInDirectory = fs
+        .readdirSync(baseFolder, (files) => files)
+        .filter((file) => fs.statSync(file).isDirectory())
+        .some((folder) => folder === folderName)
+        
+    if (folderInDirectory) return console.log('folder name already exists')
+
+    fs.mkdir(folderName, (err) => {
+        if (err) console.log(err)
+        else console.log(`New directory: ${folderName} - successfully created.`)
+    })
+}
+
+createDirectory()
